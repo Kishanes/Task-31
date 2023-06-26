@@ -1,0 +1,83 @@
+CREATE TABLE `auth_user` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `password` varchar(128) NOT NULL,
+  `last_login` datetime(6) DEFAULT NULL,
+  `is_superuser` tinyint(1) NOT NULL,
+  `username` varchar(150) NOT NULL,
+  `first_name` varchar(150) NOT NULL,
+  `last_name` varchar(150) NOT NULL,
+  `email` varchar(254) NOT NULL,
+  `is_staff` tinyint(1) NOT NULL,
+  `is_active` tinyint(1) NOT NULL,
+  `date_joined` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+
+
+
+
+CREATE TABLE `kisanapp_genre` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+ 
+
+
+CREATE TABLE `kisanapp_review` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `review` longtext NOT NULL,
+  `author_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `kisanapp_review_author_id_6dd4b3f0_fk_auth_user_id` (`author_id`),
+  CONSTRAINT `kisanapp_review_author_id_6dd4b3f0_fk_auth_user_id` FOREIGN KEY (`author_id`) REFERENCES `auth_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `kisanapp_skills` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `skill_name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `kisanapp_rolls` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `roll_name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `kisanapp_movie_artist` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `movie_id` bigint NOT NULL,
+  `artist_id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `kisanapp_movie_artist_movie_id_artist_id_0eb74be8_uniq` (`movie_id`,`artist_id`),
+  KEY `kisanapp_movie_artist_artist_id_0de549c2_fk_kisanapp_artist_id` (`artist_id`),
+  CONSTRAINT `kisanapp_movie_artist_artist_id_0de549c2_fk_kisanapp_artist_id` FOREIGN KEY (`artist_id`) REFERENCES `kisanapp_artist` (`id`),
+  CONSTRAINT `kisanapp_movie_artist_movie_id_bd40155f_fk_kisanapp_movie_id` FOREIGN KEY (`movie_id`) REFERENCES `kisanapp_movie` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+
+
+
+CREATE TABLE `kisanapp_movie` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `movie_name` varchar(300) NOT NULL,
+  `media` varchar(100) NOT NULL,
+  `movie_review_id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `movie_name` (`movie_name`),
+  KEY `kisanapp_movie_movie_review_id_194f5322_fk_kisanapp_review_id` (`movie_review_id`),
+  CONSTRAINT `kisanapp_movie_movie_review_id_194f5322_fk_kisanapp_review_id` FOREIGN KEY (`movie_review_id`) REFERENCES `kisanapp_review` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
